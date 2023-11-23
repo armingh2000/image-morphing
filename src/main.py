@@ -20,17 +20,11 @@ if __name__ == "__main__":
     aligned_face1, _ = detect_and_align_face(img1, predictor)
     aligned_face2, _ = detect_and_align_face(img2, predictor)
 
+    # Resize faces
+    face1, face2 = resize_images(aligned_face1, aligned_face2)
+
+    # Perform morph
+    morphs = dct_morph(face1, face2, 5)
+
     # Combine the faces if both are detected
-    show_images(aligned_face1, aligned_face2, path1=path1, path2=path2)
-
-    # # Perform DCT
-    # dct1 = perform_dct(img1)
-    # dct2 = perform_dct(img2)
-
-    # # Perform IDCT
-    # idct_image = perform_idct(dct_image)
-
-    # # Show original, DCT, and IDCT images
-    # show_images(
-    #     [image, dct_image, idct_image], ["Original Image", "DCT Image", "IDCT Image"]
-    # )
+    show_images(*morphs, path1=path1, path2=path2)

@@ -1,6 +1,7 @@
 import cv2
 import dlib
 import numpy as np
+import configs
 
 
 def detect_and_align_face(gray, predictor):
@@ -50,5 +51,20 @@ def align_and_crop_face(gray, landmarks_points):
     return cropped_face, (x, y, w, h)
 
 
+def resize_images(image1, image2):
+    # Determine the minimum dimensions
+    min_height = min(image1.shape[0], image2.shape[0])
+    min_width = min(image1.shape[1], image2.shape[1])
+    output_size = (min_width, min_height)
+
+    # Resize images
+    resized_image1 = cv2.resize(image1, output_size)
+    resized_image2 = cv2.resize(image2, output_size)
+
+    return resized_image1, resized_image2
+
+
 # Load the shape predictor
-predictor = dlib.shape_predictor("./shape_predictor_68_face_landmarks.dat")
+predictor = dlib.shape_predictor(
+    str(configs.project_root / "src/shape_predictor_68_face_landmarks.dat")
+)

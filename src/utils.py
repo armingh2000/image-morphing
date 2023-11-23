@@ -41,18 +41,31 @@ def combine_faces(*faces, **paths):
 def show_images(*faces, **paths):
     images = combine_faces(*faces, **paths)
     titles = []
-    assert len(faces) >= 2
+    print(images)
+    assert len(images) >= 2
 
-    for i in range(len(faces)):
+    for i in range(len(images)):
         titles.append(f"Step {i}")
 
     titles[0] = "Source"
     titles[-1] = "Target"
 
-    # Display images in a row
-    plt.figure(figsize=(12, 5))
+    # Validate the number of columns
+    cols = 3
+    if cols < 1:
+        cols = 1
+    elif cols > len(images):
+        cols = len(images)
+
+    # Calculate rows needed
+    rows = (len(images) + cols - 1) // cols
+
+    # Display images
+    plt.figure(
+        figsize=(6 * cols, 5 * rows)
+    )  # Adjust figure size based on rows and cols
     for i, (image, title) in enumerate(zip(images, titles)):
-        plt.subplot(1, len(images), i + 1)
+        plt.subplot(rows, cols, i + 1)
         plt.imshow(image, cmap="gray")
         plt.title(title)
         plt.axis("off")
