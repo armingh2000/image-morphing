@@ -7,6 +7,9 @@ DATA_ZIP="../data/data.zip"
 DATA_DIR="../data/"
 DATA_URL="https://figshare.com/ndownloader/articles/5047666/versions/5"
 FRONT_DIR="../data/front"
+SRC_DIR="../src/"
+DAT_URL="https://huggingface.co/spaces/asdasdasdasd/Face-forgery-detection/resolve/ccfc24642e0210d4d885bc7b3dbc9a68ed948ad6/shape_predictor_68_face_landmarks.dat"
+DAT_PATH="../src/shape_predictor_68_face_landmarks.dat"
 
 # Check for Conda
 if ! command -v conda &> /dev/null
@@ -82,5 +85,13 @@ fi
 # Removing .tem files
 echo "Removing unnecessary files"
 rm $FRONT_DIR/neutral_front/*.tem
+
+# Getting .dat file
+if [ ! -f "$DAT_PATH" ]; then
+    echo "Downloading .dat file..."
+    wget $DAT_URL -O $DAT_PATH
+else
+    echo "Data file already exists, skipping download."
+fi
 
 echo "Setup complete. Conda environment '$ENV_NAME' is ready. Activate it using 'conda activate $ENV_NAME' and run your script."
