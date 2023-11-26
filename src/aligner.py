@@ -4,7 +4,7 @@ import numpy as np
 import configs
 
 
-def detect_and_align_face(gray, predictor):
+def detect_landmarks_points(gray):
     # Detect faces in the image
     detector = dlib.get_frontal_face_detector()
     faces = detector(gray, 1)
@@ -18,21 +18,20 @@ def detect_and_align_face(gray, predictor):
             (landmarks.part(n).x, landmarks.part(n).y) for n in range(68)
         ]
 
-        # Crop and align face
-        aligned_face, crop_coordinates = align_and_crop_face(gray, landmarks_points)
-
-        return aligned_face, crop_coordinates
-    else:
-        return None, None
+    return landmarks_points
 
 
-def align_and_crop_face(gray, landmarks_points):
-    # Calculating rotation based on eye positions
-    left_eye_corner = landmarks_points[37]
-    right_eye_corner = landmarks_points[43]
+def level_face(gray, landmarks_points):
+    # Correct landmarks for the corners of the eyes
+    left_eye_corner = landmarks_points[36]  # Outer corner of the right eye
+    right_eye_corner = landmarks_points[45]  # Outer corner of the left eye
+
+    # Calculate the angle between the eye corners
     dY = right_eye_corner[1] - left_eye_corner[1]
     dX = right_eye_corner[0] - left_eye_corner[0]
     angle = np.degrees(np.arctan2(dY, dX))
+
+    # Center between the eyes
     eyes_center = (
         (left_eye_corner[0] + right_eye_corner[0]) // 2,
         (left_eye_corner[1] + right_eye_corner[1]) // 2,
@@ -44,24 +43,35 @@ def align_and_crop_face(gray, landmarks_points):
         gray, M, (gray.shape[1], gray.shape[0]), flags=cv2.INTER_CUBIC
     )
 
+    return aligned_face
+
+
+def crop_face(gray, landmarks_points, coordinates=None):
     # Crop the face
-    x, y, w, h = cv2.boundingRect(np.array(landmarks_points))
-    cropped_face = aligned_face[y : y + h, x : x + w]
+
+    if coordinates is None:
+        x, y, w, h = cv2.boundingRect(np.array(landmarks_points))
+    else:
+        x, y, w, h = coordinates
+
+    cropped_face = gray[y : y + h, x : x + w]
 
     return cropped_face, (x, y, w, h)
 
 
-def resize_images(image1, image2):
-    # Determine the minimum dimensions
-    min_height = min(image1.shape[0], image2.shape[0])
-    min_width = min(image1.shape[1], image2.shape[1])
-    output_size = (min_width, min_height)
+def align_eyes(gray1, gray2, landmarks1, landmarks2):
+    points1 = np.float32([landmarks1[36], landmarks1[45], landmarks1[33]])
+    points2 = np.float32([landmarks2[36], landmarks2[45], landmarks2[33]])
 
-    # Resize images
-    resized_image1 = cv2.resize(image1, output_size)
-    resized_image2 = cv2.resize(image2, output_size)
+    # Compute the affine transform matrix
+    M = cv2.getAffineTransform(points2, points1)
 
-    return resized_image1, resized_image2
+    # Apply the affine transformation
+    aligned_face2 = cv2.warpAffine(
+        gray2, M, (gray2.shape[1], gray2.shape[0]), flags=cv2.INTER_CUBIC
+    )
+
+    return aligned_face2  # Returning only the aligned image
 
 
 # Load the shape predictor
