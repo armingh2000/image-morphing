@@ -4,6 +4,7 @@ import os
 import random
 from matplotlib.widgets import Slider
 import matplotlib.animation as animation
+import configs
 
 
 def load_image(image_path):
@@ -12,8 +13,8 @@ def load_image(image_path):
     return image
 
 
-def resize_image(image, size=(300, 300)):
-    return cv2.resize(image, size)
+def resize_image(image):
+    return cv2.resize(image, (configs.img_height, configs.img_width))
 
 
 def random_files(*dirs):
@@ -91,7 +92,6 @@ def show_images(*faces, **paths):
 def show_images_slider(*faces, **paths):
     # Combine faces and do preprocessing steps
     images = combine_faces(*faces, **paths)
-    print(images[0].shape)
     titles = []
     assert len(images) >= 2
 
@@ -103,12 +103,14 @@ def show_images_slider(*faces, **paths):
 
     # Set the figure size
     fig, ax = plt.subplots()
-    plt.subplots_adjust(bottom=0.25)
+    plt.subplots_adjust(left=0.2, right=0.8, top=0.9, bottom=0.3)
+    # plt.subplots_adjust(bottom=0.25)
     img_display = ax.imshow(images[0], cmap="gray", aspect="auto")
     ax.set_title(titles[0])
+    ax.axis("off")
 
     # Slider setup
-    ax_slider = plt.axes([0.25, 0.1, 0.65, 0.03])
+    ax_slider = plt.axes([0.20, 0.1, 0.65, 0.03])
     slider = Slider(ax_slider, "Step", 1, len(images), valinit=1, valfmt="%0.0f")
 
     # Update function for the slider
@@ -132,7 +134,7 @@ def show_images_slider(*faces, **paths):
 
     # Create animation
     ani = animation.FuncAnimation(
-        fig, animate, frames=2 * (len(images) - 1), interval=100, repeat=True
+        fig, animate, frames=2 * (len(images) - 1), interval=500, repeat=True
     )
 
     plt.show()
