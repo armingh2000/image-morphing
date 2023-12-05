@@ -7,3 +7,4 @@ current_file_path = Path(__file__).resolve()
 project_root = current_file_path.parent.parent  # Adjust with .parent as needed
 neutral_image_path = project_root / "data/front/neutral_front/"
 smiling_image_path = project_root / "data/front/smiling_front/"
+img_width, img_height = 300, 300
