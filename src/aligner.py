@@ -62,14 +62,20 @@ def crop_face(gray, landmarks_points, coordinates=None):
 def align_eyes(gray1, gray2, landmarks1, landmarks2):
     points1 = np.float32([landmarks1[36], landmarks1[45], landmarks1[51]])
     points2 = np.float32([landmarks2[36], landmarks2[45], landmarks2[51]])
+    # points1 = np.float32([landmarks1[36], landmarks1[45], landmarks1[7], landmarks1[9]])
+    # points2 = np.float32([landmarks2[36], landmarks2[45], landmarks2[7], landmarks2[9]])
 
     # Compute the affine transform matrix
     M = cv2.getAffineTransform(points2, points1)
+    # M = cv2.getPerspectiveTransform(points2, points1)
 
     # Apply the affine transformation
     aligned_face2 = cv2.warpAffine(
         gray2, M, (gray2.shape[1], gray2.shape[0]), flags=cv2.INTER_CUBIC
     )
+    # aligned_face2 = cv2.warpPerspective(
+    #     gray2, M, (gray1.shape[1], gray1.shape[0]), flags=cv2.INTER_CUBIC
+    # )
 
     return aligned_face2  # Returning only the aligned image
 
