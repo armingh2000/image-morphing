@@ -25,7 +25,12 @@ def random_files(*dirs):
         dir = dirs[i]
 
         # List all files in the given directory
-        files = [f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f))]
+        files = [
+            f
+            for f in os.listdir(dir)
+            if os.path.isfile(os.path.join(dir, f))
+            if "jpg" in f
+        ]
 
         # Randomly select a file
         if files:
