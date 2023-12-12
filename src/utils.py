@@ -5,6 +5,51 @@ import random
 from matplotlib.widgets import Slider
 import matplotlib.animation as animation
 import configs
+import pickle
+
+
+def dump_data(data, file_path):
+    # Create directories if they don't exist
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    # Use 'wb' to write in binary mode
+    with open(file_path, "wb") as file:
+        pickle.dump(data, file)
+
+
+def load_data(file_path):
+    # Use 'rb' to read in binary mode
+    with open(file_path, "rb") as file:
+        data = pickle.load(file)
+    return data
+
+
+def generate_permutations(num1, num2):
+    return [(t1, t2) for t1 in range(num1) for t2 in range(num2)]
+
+
+def get_all_file_combinations(*dirs):
+    dir_files = []
+
+    i = 0
+    while i < len(dirs):
+        dir = dirs[i]
+
+        # List all files in the given directory
+        dir_files.append(
+            [
+                str(dir / f)
+                for f in os.listdir(dir)
+                if os.path.isfile(os.path.join(dir, f))
+                if "jpg" in f
+            ]
+        )
+
+        i += 1
+
+    perms = generate_permutations(len(dir_files[0]), len(dir_files[1]))
+
+    return [(dir_files[0][p[0]], dir_files[1][p[1]]) for p in perms]
 
 
 def load_image(image_path):
@@ -95,7 +140,7 @@ def show_images(*faces, **paths):
 
 
 def show_images_slider(*faces, **paths):
-    # Combine faces and do preprocessing steps
+    # Combine faces and do preprocessing total_steps
     images = combine_faces(*faces, **paths)
     titles = []
     assert len(images) >= 2

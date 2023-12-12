@@ -14,7 +14,7 @@ def perform_idct(dct_image):
     return idct
 
 
-def dct_morph(img1, img2, steps=7):
+def dct_morph(img1, img2, total_steps=7):
     morphs = []
 
     # Perform DCT
@@ -23,8 +23,8 @@ def dct_morph(img1, img2, steps=7):
     # morphs.append(img1)
 
     # Combine the DCT
-    for i in range(steps + 1):
-        dct_image = gaussian_transition2(dct1, dct2, steps, i)
+    for i in range(total_steps + 1):
+        dct_image = gaussian_transition(dct1, dct2, total_steps, i)
         # Perform IDCT
         idct_image = perform_idct(dct_image)
         morphs.append(idct_image)
@@ -46,7 +46,7 @@ def perform_idft(dft_image):
     return idft
 
 
-def dft_morph(img1, img2, steps=7):
+def dft_morph(img1, img2, total_steps=7):
     morphs = []
 
     # Perform DFT
@@ -54,8 +54,8 @@ def dft_morph(img1, img2, steps=7):
     dft2 = perform_dft(img2)
 
     # Combine the DFT
-    for i in range(steps + 1):
-        dft_image = phase_magnitude_interpolation(dft1, dft2, steps, i)
+    for i in range(total_steps + 1):
+        dft_image = phase_magnitude_interpolation(dft1, dft2, total_steps, i)
 
         # Perform IDFT
         idft_image = np.abs(perform_idft(dft_image))
@@ -69,8 +69,8 @@ def dft_morph(img1, img2, steps=7):
     return morphs
 
 
-def morph(img1, img2, steps=7, morph_type="dft"):
+def morph(img1, img2, total_steps=7, morph_type="dft"):
     if morph_type == "dft":
-        return dft_morph(img1, img2, steps)
+        return dft_morph(img1, img2, total_steps)
     elif morph_type == "dct":
-        return dct_morph(img1, img2, steps)
+        return dct_morph(img1, img2, total_steps)
