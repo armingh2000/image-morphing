@@ -9,14 +9,14 @@ if __name__ == "__main__":
     emotion1, emotion2 = configs.neutral_image_path, configs.neutral_image_path
 
     # Set paths
-    # paths = random_files(emotion1, emotion2)
-    paths = [
-        "/home/subroot/Personal/university/dip/image-morphing/data/front/neutral_front/125_03.jpg",
-        "/home/subroot/Personal/university/dip/image-morphing/data/front/neutral_front/129_03.jpg",
-    ]
+    paths = random_files(emotion1, emotion2)
 
     # Load images
     img1, img2 = load_image(paths[0]), load_image(paths[1])
+    if img1 is None:
+        raise (ValueError(f"img1 is none; path: {paths[0]}"))
+    if img2 is None:
+        raise (ValueError(f"img2 is none; path: {paths[1]}"))
 
     # Detect Landmarks
     landmarks1 = detect_landmarks_points(img1)
@@ -46,12 +46,12 @@ if __name__ == "__main__":
 
     # face1 = draw_landmarks(face1, landmarks1)
     # face2 = draw_landmarks(face2, landmarks2)
-
     # show_images(face1, face2, path1=paths[0], path2=paths[1])
 
     # Perform morph
-    morphs = dct_morph(face1, face2)
+    morph_type = "dft"
+    morphs = morph(face1, face2, morph_type=morph_type)
 
     # Combine the faces if both are detected
-    # # show_images(*morphs, path1=paths[0], path2=paths[1])
+    # show_images(*morphs, path1=paths[0], path2=paths[1])
     show_images_slider(*morphs, path1=paths[0], path2=paths[1])
