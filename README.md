@@ -6,6 +6,10 @@ This project explores the image morphing technique, particularly face image morp
 
 We perform image morphing in the frequency. Specifically, we transform the source and target images to frequency domain using DFT and interpolate them to generate the intermediate images.
 
+<p align="center">
+    <img src="assets/README/morph_slider.gif" width="50%"/>
+</p>
+
 
 This project consists of two major steps: Image Alignment and Transition Control.
 
@@ -14,6 +18,11 @@ The baseline paper on which this work is built: [image morphing in frequency dom
 ## Image Alignment
 
 The project introduces an automated approach to align images, significantly enhancing morphing quality. It uses the OpenCV Python module for optimized image processing and facial landmark recognition for feature extraction. Techniques such as rotation to align eyes parallel to the ground and affine transformations to align eyes of source and target images are employed for precise alignment.
+
+<p align="center">
+    <img src="/assets/README/landmarks.png"
+      width="70%">
+</p>
 
 ## Transition Control
 
@@ -81,7 +90,10 @@ show_images_slider(*morphs, path1=paths[0], path2=paths[1])
 python3 src/main.py
 ```
 
-![](assets/README/morph.gif)
+<p align="center">
+    <img src="/assets/README/morph_seperate.png"
+      width="50%">
+</p>
 
 ### Producing metrics
 To produce the metrics for both DFT and DCT based morphing.

@@ -10,6 +10,10 @@ if __name__ == "__main__":
 
     # Set paths
     paths = random_files(emotion1, emotion2)
+    paths = [
+        "/home/subroot/Personal/university/dip/image-morphing/data/front/neutral_front/107_03.jpg",
+        "/home/subroot/Personal/university/dip/image-morphing/data/front/neutral_front/100_03.jpg",
+    ]
 
     # Load images
     img1, img2 = load_image(paths[0]), load_image(paths[1])
@@ -44,13 +48,14 @@ if __name__ == "__main__":
     face1 = resize_image(face1)
     face2 = resize_image(face2)
 
+    # landmarks1 = detect_landmarks_points(face1)
+    # landmarks2 = detect_landmarks_points(face2)
     # face1 = draw_landmarks(face1, landmarks1)
     # face2 = draw_landmarks(face2, landmarks2)
     # show_images(face1, face2, path1=paths[0], path2=paths[1])
 
     # Perform morph
-    morph_type = "dft"
-    morphs = morph(face1, face2, morph_type=morph_type)
+    morphs = morph(face1, face2, morph_type=configs.morph_type)
 
     # Combine the faces if both are detected
     # show_images(*morphs, path1=paths[0], path2=paths[1])
