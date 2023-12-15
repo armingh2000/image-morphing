@@ -22,7 +22,7 @@ def gaussian_transition(f1, f2, total_steps, step):
 
     H = gaussian_low_pass_filter(m, n, D0)
 
-    return (f1 - f2) * H + f2
+    return (f2 - f1) * H + f1
 
 
 def gaussian_transition2(f1, f2, total_steps, step):

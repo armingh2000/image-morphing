@@ -27,6 +27,7 @@ def dct_morph(img1, img2, total_steps=7):
         dct_image = gaussian_transition(dct1, dct2, total_steps, i)
         # Perform IDCT
         idct_image = perform_idct(dct_image)
+        idct_image = np.clip(idct_image, 0, 255)
         morphs.append(idct_image)
 
     # morphs.append(img2)
