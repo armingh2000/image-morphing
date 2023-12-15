@@ -32,10 +32,6 @@ Transition control is achieved by using the Discrete Fourier Transform (DFT) for
 
 Demonstrations of the algorithm's performance are provided, comparing with baseline methods. We use metrics like Structural Similarity Index (SSIM) and Peak Signal-to-Noise Ratio (PSNR) for evaluating the quality of morphed images.
 
-## Future Work
-- [ ] Reduce ghost-like features
-- [ ] Explore other alignment methods (beside affine and perspective transformations) that minimize the disfigurement of faces
-
 ## How to Use
 
 The project consists of two main directories:
@@ -111,6 +107,10 @@ python3 src/stats.py
 ```
 
 *Statistics are only generated once and the required numbers are saved for future use.*
+
+## Future Work
+- [ ] Reduce ghost-like features
+- [ ] Explore other alignment methods (beside affine and perspective transformations) that minimize the disfigurement of faces
 
 ## License
 
