@@ -116,7 +116,7 @@ weights = {"dft": polar_weights, "dct": gaussian_weights}
 
 
 if __name__ == "__main__":
-    # generate_stats(number_of_examples)
+    generate_stats(number_of_examples)
     print(np.average(np.array(load_data("stats/ssim_dft.pkl")), axis=0))
     print(np.average(np.array(load_data("stats/psnr_dft.pkl")), axis=0))
     print(np.average(np.array(load_data("stats/ssim_dct.pkl")), axis=0))
